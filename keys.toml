@@ -1,0 +1,35 @@
+# Copy to ./keys.toml (gitignored) at the repo root and fill in. This is the one place your keys live.
+# GRobot then uses an open REST connection to http://localhost:8030/<route-name>/... with no credentials.
+
+[routes.rapidapi-linkedin]
+base_url = "https://linkedin-bulk-data-scraper.p.rapidapi.com"
+headers = { "X-RapidAPI-Key" = "dc7b35d111msh1aed4dadbd50506p1d8656jsn58bd9212695c", "X-RapidAPI-Host" = "linkedin-bulk-data-scraper.p.rapidapi.com" }
+
+# Another connector: a bearer token.
+# [routes.example-api]
+# base_url = "https://api.example.com/v1"
+# headers = { "Authorization" = "Bearer PASTE_TOKEN_HERE" }
+
+# A key sent as a query parameter instead of a header.
+# [routes.weather]
+# base_url = "https://api.weather.example"
+# query = { "appid" = "PASTE_KEY_HERE" }
+
+
+# No API key required
+[routes.weather]
+base_url = "https://api.open-meteo.com/v1"
+
+# Local AI model
+[routes.ollama]
+base_url = "http://localhost:11434/api"
+
+# GitHub API with bearer token
+[routes.github]
+base_url = "https://api.github.com"
+headers = { "Authorization" = "Bearer ${GITHUB_TOKEN}" }
+
+# Hosted API using an API key
+[routes.external_api]
+base_url = "https://api.example.com/v1"
+headers = { "Authorization" = "Bearer ${EXTERNAL_API_KEY}" }

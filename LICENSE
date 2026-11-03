@@ -1,0 +1,41 @@
+GROBOT ENTERPRISE LICENSE — PROPRIETARY AND CONFIDENTIAL
+
+Copyright (c) 2026 GRTechAdvisory. All rights reserved.
+
+1. OWNERSHIP. This repository and everything in it (source code, documentation, designs,
+   configuration, data and build artefacts, together the "Software") is the confidential
+   and proprietary property of GRTechAdvisory. No title or ownership passes to you.
+
+2. NO LICENSE BY DEFAULT. Nothing in this repository, and no access to it, grants any right
+   to use, copy, modify, merge, publish, distribute, sublicense, sell, host, fork, mirror or
+   create derivative works of the Software. Source availability is not permission.
+
+3. NO USE, NO FORKS. You may not use the Software, in whole or in part, for any purpose, and
+   you may not fork or otherwise replicate the repository, except under a separate written
+   enterprise agreement signed by an authorised officer of GRTechAdvisory ("Enterprise Agreement").
+   Where an Enterprise Agreement exists, its terms are the only terms that apply, and
+   anything it does not expressly grant is reserved to GRTechAdvisory.
+
+4. AUTHORISED ACCESS. Employees and contractors of GRTechAdvisory may access and work on the Software
+   solely to perform work for GRTechAdvisory, under their confidentiality obligations to GRTechAdvisory.
+
+5. RESTRICTIONS. Without GRTechAdvisory's prior written consent you may not: (a) disclose the Software
+   to any third party; (b) reverse engineer or extract algorithms, prompts, schemas or data
+   from it; (c) use it to build or train a competing product or service; (d) remove or alter
+   any proprietary notice; or (e) use GRTechAdvisory's names or marks.
+
+6. THIRD-PARTY COMPONENTS. The Software depends on third-party open-source components, which
+   remain under their own licences (see THIRD_PARTY_NOTICES.md). This licence does not change
+   those licences and does not apply to those components.
+
+7. TERMINATION. Any breach ends all rights immediately. On request you must stop using the
+   Software and destroy every copy.
+
+8. NO WARRANTY. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. TO THE FULLEST
+   EXTENT PERMITTED BY LAW, GROBOT IS NOT LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING
+   FROM OR IN CONNECTION WITH THE SOFTWARE.
+
+9. REMEDIES. Unauthorised use would cause GRTechAdvisory irreparable harm, and GRTechAdvisory may seek injunctive
+   relief in addition to any other remedy.
+
+For licensing enquiries, contact GRTechAdvisory through the channel given in your Enterprise Agreement.

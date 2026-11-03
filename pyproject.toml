@@ -1,0 +1,186 @@
+[project]
+name = "grobot"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "cryptography>=43",
+    "signxml>=3.2",
+    "playwright>=1.49",
+    "python-multipart>=0.0.9",
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "httpx>=0.27",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "types-croniter>=6.2.4.20260711",
+    "types-jsonschema>=4.26.0.20260518",
+]
+
+[tool.uv.workspace]
+members = ["packages/core", "apps/api", "services/worker", "services/ai-runtime", "services/ingestion", "services/mcp", "services/data-engine", "services/key-gateway"]
+
+[tool.uv.sources]
+grobot-core = { workspace = true }
+grobot-api = { workspace = true }
+grobot-worker = { workspace = true }
+grobot-ai-runtime = { workspace = true }
+grobot-ingestion = { workspace = true }
+grobot-mcp = { workspace = true }
+grobot-data-engine = { workspace = true }
+grobot-key-gateway = { workspace = true }
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [
+  "infrastructure/migrations/versions",
+  "Communication",  # briefs written outside the codebase; not ours to reformat
+  "docs/command-voice-collaboration-evidence",  # archived evidence scripts from a live run, kept as run
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "S", "ASYNC", "RUF"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S", "E501", "F811", "E741", "RUF015"]  # F811: pytest fixtures imported then used as parameters
+"services/data-engine/tests/**" = ["RUF", "UP", "ASYNC"]  # test fixtures are terse on purpose
+"services/data-engine/benchmarks/**" = ["S", "E501", "E402", "RUF", "B", "UP"]  # reader comparison scripts, not shipped
+"services/data-engine/src/**" = ["S608", "RUF001"]  # S608: SQL text uses only schema-validated, quoted identifiers and bound parameters (sqlutil.py); RUF001: the control-character class lists invisible characters on purpose
+"packages/core/src/grobot_core/command/agent.py" = ["E501"]  # user-facing sentences, kept readable as written
+"packages/core/src/grobot_core/command/session/*.py" = ["E501"]  # user-facing sentences, kept readable as written
+"packages/core/src/grobot_core/command/tasks/*.py" = ["E501"]  # user-facing sentences, kept readable as written
+"apps/api/src/grobot_api/routers/skills.py" = ["E501"]  # user-facing sentences, kept readable as written
+"services/data-engine/src/grobot_data_engine/ingest.py" = ["E501"]  # user-facing sentences and SQL text, kept readable as written
+"services/data-engine/src/grobot_data_engine/typer.py" = ["E501"]
+"services/data-engine/src/grobot_data_engine/tasks.py" = ["E501"]
+"services/data-engine/src/grobot_data_engine/combine.py" = ["E501"]
+"services/data-engine/src/grobot_data_engine/extract.py" = ["E501"]
+"services/data-engine/src/grobot_data_engine/compiler.py" = ["E501"]
+"services/data-engine/src/grobot_data_engine/export.py" = ["E501"]
+"services/data-engine/src/grobot_data_engine/query.py" = ["E501"]  # SQL text is built from schema-validated, quoted identifiers and bound parameters only (sqlutil.py)
+"packages/core/src/grobot_core/skills/**" = ["E501", "RUF001"]  # user-facing sentences and the secret/injection pattern tables, kept readable as written; RUF001: the control-character class lists invisible characters on purpose
+"e2e/**" = ["S", "E501", "F811"]  # F811: fixtures shared between e2e modules, imported then used as parameters
+"packages/core/tests/test_piece_host_isolation.py" = ["ASYNC221"]
+"infrastructure/scripts/**" = ["S", "E501"]
+"packages/core/src/grobot_core/testing/**" = ["S603", "S607", "S108", "S105", "E501"]  # test infrastructure drives docker
+"packages/core/src/grobot_core/connect/catalogue/sync.py" = ["S603", "S607", "S108"]  # admin-only build process
+"packages/core/src/grobot_core/data/intake.py" = ["E501"]  # user-facing sentences, kept readable as written
+"packages/core/src/grobot_core/data/provenance.py" = ["E501"]
+"packages/core/src/grobot_core/data/apply.py" = ["E501"]
+"packages/core/src/grobot_core/data/report.py" = ["E501"]
+"apps/api/src/grobot_api/routers/data.py" = ["E501"]
+"apps/api/src/grobot_api/routers/command_artifacts.py" = ["E501"]  # docstrings and user-facing sentences  # docstrings and user-facing sentences
+"packages/core/src/grobot_core/data/views.py" = ["E501"]
+"packages/core/src/grobot_core/command/artifacts.py" = ["E501"]
+"packages/core/src/grobot_core/command/artifact_service.py" = ["E501"]  # user-facing sentences handed to the model
+"packages/core/src/grobot_core/command/artifact_proposals.py" = ["E501"]
+"packages/core/src/grobot_core/artifacts/*.py" = ["E501", "RUF001"]  # user-facing sentences and format tables, kept readable as written
+"packages/core/src/grobot_core/command/data_tools.py" = ["E501", "RUF001"]  # tool descriptions are prose handed to the model; the sanitiser lists invisible characters on purpose
+"packages/core/src/grobot_core/command/product.py" = ["E501"]
+"packages/core/src/grobot_core/data/service.py" = ["E501"]
+"packages/core/src/grobot_core/data/analysis.py" = ["E501"]
+"packages/core/src/grobot_core/data/jobs.py" = ["E501"]
+"packages/core/src/grobot_core/memory/*.py" = ["E501", "RUF001"]  # prose handed to the model and regular expressions, kept readable as written
+"packages/core/src/grobot_core/command/memory_tools.py" = ["E501", "RUF001"]
+"packages/core/src/grobot_core/command/proposals.py" = ["E501"]
+"packages/core/src/grobot_core/command/tools.py" = ["E501"]
+"packages/core/src/grobot_core/models/memory.py" = ["E501"]
+"packages/core/src/grobot_core/billing/analytics.py" = ["E501", "S608"]  # aggregate SQL kept readable as written; the only interpolated name is chosen from a fixed two-entry table, every value is a bound parameter
+"packages/core/src/grobot_core/billing/reconcile.py" = ["E501"]  # the consistency checks are SQL text, kept readable as written
+"packages/core/src/grobot_core/command/tasks/intent.py" = ["E501", "RUF001"]  # regular expressions for plain wording, kept readable as written
+"packages/core/src/grobot_core/command/tasks/planning.py" = ["E501"]  # prose handed to the model
+"packages/core/src/grobot_core/command/tasks/tools.py" = ["E501"]  # tool descriptions are prose handed to the model
+"packages/core/src/grobot_core/command/guide.py" = ["E501"]  # prose handed to the model, kept readable as written
+"packages/core/src/grobot_core/computer/*.py" = ["E501"]  # sentences handed to the model and the person, and regular expressions, kept readable as written
+"packages/core/src/grobot_core/models/computer.py" = ["E501"]
+"apps/api/src/grobot_api/routers/computer.py" = ["E501"]  # sentences handed to the person, kept readable as written
+"services/computer-runtime/src/**" = ["E501", "S104"]  # messages handed to the control plane; the container binds all interfaces on purpose
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+explicit_package_bases = true
+# The runtime's own tests are driven by the root pytest run; its sources ARE type-checked.
+exclude = ["services/computer-runtime/tests/"]
+mypy_path = ["packages/core/src", "apps/api/src", "services/worker/src", "services/ai-runtime/src", "services/ingestion/src", "services/mcp/src", "services/data-engine/src", "services/computer-runtime/src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = "--import-mode=importlib"
+markers = [
+    "e2e: end-to-end tests against the full stack (make e2e)",
+    "docker: needs real containers; its own CI tier",
+]
+pythonpath = ["e2e", "services/computer-runtime/src"]
+testpaths = ["packages/core/tests", "apps/api/tests", "services/worker/tests", "services/ingestion/tests", "services/ai-runtime/tests", "services/data-engine/tests", "services/computer-runtime/tests"]
+
+[[tool.mypy.overrides]]
+module = ["browser_use", "browser_use.*", "boto3", "boto3.*", "botocore", "botocore.*", "celery", "celery.*", "casbin", "casbin.*", "dns", "dns.*", "lxml", "lxml.*", "signxml", "signxml.*", "reportlab", "reportlab.*", "openpyxl", "openpyxl.*", "pyarrow", "pyarrow.*", "xlsxwriter", "xlsxwriter.*"]
+ignore_missing_imports = true
+
+# python-pptx and python-docx are typed only in part; their object model is driven through untyped calls.
+[[tool.mypy.overrides]]
+module = ["grobot_core.artifacts.deck", "grobot_core.artifacts.document"]
+disallow_untyped_calls = false
+
+# The billing tests drive a fixture-heavy rig (`BillingRig`) against real PostgreSQL and read rows as untyped
+# dictionaries; they are checked for correctness by running them.
+[[tool.mypy.overrides]]
+module = ["packages.core.tests.test_billing_primitives", "packages.core.tests.test_billing_payments", "packages.core.tests.db.test_billing_rating", "packages.core.tests.db.test_billing_payments", "packages.core.tests.db.test_billing_lifecycle", "packages.core.tests.db.test_billing_admin", "packages.core.tests.db.test_billing_sweeper", "packages.core.tests.db.test_billing_effects", "packages.core.tests.db.test_billing_performance", "apps.api.tests.test_billing_api"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+disallow_any_generics = false
+warn_unused_ignores = false
+disable_error_code = ["var-annotated", "type-var", "misc", "arg-type", "union-attr", "index", "attr-defined", "assignment", "call-arg", "no-any-return", "operator", "return-value", "dict-item", "override"]
+
+# The Skills tests drive fixture-heavy helpers (`skill(...)`, `publish_skill(...)`, the command rig) and are
+# checked for correctness by running them, as the data-engine tests are.
+[[tool.mypy.overrides]]
+module = ["packages.core.tests.test_skills_pure", "packages.core.tests.db.test_skills_lifecycle", "packages.core.tests.db.test_skills_command", "packages.core.tests.db.test_skills_tasks", "packages.core.tests.db.test_skills_sessions", "packages.core.tests.db.test_skills_security", "packages.core.tests.db.test_skills_perf", "apps.api.tests.test_skills"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+warn_unused_ignores = false
+
+# The data-engine tests and benchmarks drive a fixture-heavy sandbox (`engine(...)` returns untyped
+# bytes and dicts); they are checked for correctness by running them, not by full annotation.
+[[tool.mypy.overrides]]
+module = ["conftest", "data_rig", "data_rig_tenants", "pipeline_perf", "say_helpers", "test_boundary", "test_combine_export", "test_command_data", "test_documents", "test_ingest_csv", "test_ingest_xlsx", "test_pipeline", "test_query_correctness", "test_reports", "xlsx_compare", "xlsx_fixtures", "xlsx_perf"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+disallow_any_generics = false
+warn_return_any = false
+check_untyped_defs = false
+
+# The scheduling tests drive many small pure helpers and fixture-heavy databases; they are checked for
+# correctness by running them, as the data-engine tests above are.
+[[tool.mypy.overrides]]
+module = ["test_task_schedule", "test_task_monitors", "test_task_intent", "test_command_tasks", "test_command_task_turns", "test_command_task_monitors", "test_command_task_reliability", "test_command_tasks_perf", "*.test_task_schedule", "*.test_task_monitors", "*.test_task_intent", "*.test_command_tasks", "*.test_command_task_turns", "*.test_command_task_monitors", "*.test_command_task_reliability", "*.test_command_tasks_perf"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+check_untyped_defs = false
+disable_error_code = ["index", "union-attr", "operator", "assignment", "list-item", "arg-type", "truthy-function", "var-annotated"]
+
+# The GRobot Computer tests drive a real browser through fixture-heavy rigs (attributes added to a rig
+# by a fixture, assertions on SQLAlchemy classes); they are checked for correctness by running them.
+[[tool.mypy.overrides]]
+module = ["test_computer", "test_computer_service", "test_computer_operate", "test_computer_tools", "test_computer_host", "test_computer_container", "*.test_computer", "*.test_computer_service", "*.test_computer_operate", "*.test_computer_tools", "*.test_computer_host", "*.test_computer_container"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+check_untyped_defs = false
+disable_error_code = ["attr-defined", "truthy-function", "unused-ignore", "var-annotated", "arg-type", "index", "union-attr", "assignment"]
+
+[[tool.mypy.overrides]]
+module = ["xlsx_compare", "xlsx_fixtures"]  # reader-comparison scripts that import a library we did not adopt
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = ["grobot_worker.*", "grobot_data_engine.worker"]
+disallow_untyped_decorators = false

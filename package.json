@@ -1,0 +1,26 @@
+{
+  "name": "grobot",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "lint": "pnpm -r --if-present lint",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "format": "prettier --write \"apps/{web,widget}/src/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"apps/{web,widget}/src/**/*.{ts,tsx,css}\""
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "prettier": "^3.3.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "ignore": "7.0.10",
+      "postcss": "^8.5.23",
+      "drizzle-orm": "^0.45.2"
+    },
+    "patchedDependencies": {
+      "next@15.5.28": "patches/next@15.5.28.patch"
+    }
+  }
+}
